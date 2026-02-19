@@ -3,8 +3,7 @@
 A modern, responsive Engineering Faculty Portal built using pure HTML, CSS, and JavaScript.
 
 🌐 Live Demo:
-https://yourusername.github.io/repository-name/
-
+https://amrr9.github.io/FEST/
 ---
 
 ## ✨ Features
