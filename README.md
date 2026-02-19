@@ -44,6 +44,6 @@ https://github.com/amrr9/FEST.git
 
 - Connect to real backend database
 - Add real authentication system
-- Email confirmation for event registration
+- (done)Email confirmation for event registration
 - Google Forms integration
 - Convert into full WordPress theme
