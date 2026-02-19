@@ -2,1219 +2,1221 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Engineering Faculty Portal</title>
-
-  <!-- EmailJS -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-  <style>
-    /* ===== CSS VARIABLES ===== */
-    :root {
-      --primary-blue: #003d82;
-      --secondary-blue: #0056b3;
-      --accent-yellow: #FFD700;
-      --light-bg: #f8fafc;
-      --white: #ffffff;
-      --text-dark: #1e293b;
-      --text-light: #ffffff;
-      --text-muted: #64748b;
-      --border-color: #e2e8f0;
-      --shadow: rgba(0, 61, 130, 0.1);
-      --gradient-bg: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f8fafc 100%);
-    }
-
-    /* Dark Mode Variables */
-    [data-theme="dark"] {
-      --primary-blue: #0056b3;
-      --secondary-blue: #003d82;
-      --accent-yellow: #FFC107;
-      --light-bg: #0f172a;
-      --white: #1e293b;
-      --text-dark: #f1f5f9;
-      --text-light: #f1f5f9;
-      --text-muted: #94a3b8;
-      --border-color: #334155;
-      --shadow: rgba(0, 0, 0, 0.3);
-      --gradient-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-    }
-
-    /* ===== RESET & BASE STYLES ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      line-height: 1.6;
-      color: var(--text-dark);
-      background: var(--gradient-bg);
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-
-    /* ===== ANIMATIONS ===== */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes slideInRight {
-      from {
-        opacity: 0;
-        transform: translateX(30px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.05);
-      }
-    }
-
-    @keyframes float {
-
-      0%,
-      100% {
-        transform: translateY(0px);
-      }
-
-      50% {
-        transform: translateY(-20px);
-      }
-    }
-
-    @keyframes spin {
-      from {
-        transform: rotate(0deg);
-      }
-
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    @keyframes glow {
-
-      0%,
-      100% {
-        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-      }
-
-      50% {
-        box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
-      }
-    }
-
-    .animate-fadeIn {
-      animation: fadeIn 0.6s ease-out;
-    }
-
-    .animate-slideIn {
-      animation: slideInRight 0.5s ease-out;
-    }
-
-    .animate-pulse {
-      animation: pulse 2s infinite;
-    }
-
-    .animate-float {
-      animation: float 3s ease-in-out infinite;
-    }
-
-    /* ===== HEADER & NAVIGATION ===== */
-    header {
-      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-      color: var(--text-light);
-      padding: 1rem 2rem;
-      box-shadow: 0 4px 20px var(--shadow);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      border-bottom: 4px solid var(--accent-yellow);
-    }
-
-    .header-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .logo-img {
-      height: 50px;
-      background: white;
-      padding: 0.3rem;
-      border-radius: 8px;
-    }
-
-    .logo-text {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--text-light);
-    }
-
-    nav {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .nav-btn {
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text-light);
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      font-size: 0.95rem;
-    }
-
-    .nav-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .nav-btn.active {
-      background: var(--accent-yellow);
-      color: var(--primary-blue);
-      border-color: var(--accent-yellow);
-    }
-
-    .dark-mode-toggle {
-      background: var(--accent-yellow);
-      color: var(--primary-blue);
-      border: none;
-      padding: 0.6rem 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1.2rem;
-      font-weight: bold;
-      transition: all 0.3s ease;
-    }
-
-    .dark-mode-toggle:hover {
-      transform: scale(1.1) rotate(15deg);
-      animation: glow 1s infinite;
-    }
-
-    /* ===== HERO SECTION ===== */
-    .hero {
-      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue), var(--primary-blue));
-      color: var(--text-light);
-      padding: 5rem 2rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-      background-size: 50px 50px;
-      animation: float 20s linear infinite;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 10;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .hero h1 {
-      font-size: 3.5rem;
-      font-weight: 900;
-      margin-bottom: 1rem;
-      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-      color: var(--text-light);
-    }
-
-    .hero p {
-      font-size: 1.3rem;
-      margin-bottom: 2rem;
-      color: #e0f2ff;
-      line-height: 1.8;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent-yellow), #FFA500);
-      color: var(--primary-blue);
-      padding: 1rem 2rem;
-      border: none;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(255, 215, 0, 0.5);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.15);
-      color: var(--text-light);
-      padding: 1rem 2rem;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.25);
-      transform: translateY(-3px);
-    }
-
-    /* ===== CONTAINER & SECTIONS ===== */
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 3rem 2rem;
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: 2.5rem;
-      font-weight: bold;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .section-subtitle {
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      margin-bottom: 3rem;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    /* ===== CARDS & GRID ===== */
-    .grid {
-      display: grid;
-      gap: 2rem;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    }
-
-    .card {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 4px 20px var(--shadow);
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
-    }
-
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 40px var(--shadow);
-      border-color: var(--secondary-blue);
-    }
-
-    .event-card {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .event-header {
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      padding: 2rem;
-      margin: -2rem -2rem 1.5rem -2rem;
-      text-align: center;
-      border-radius: 16px 16px 0 0;
-    }
-
-    .event-icon {
-      font-size: 4rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .event-type {
-      background: rgba(255, 255, 255, 0.9);
-      color: var(--primary-blue);
-      padding: 0.3rem 1rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: bold;
-      display: inline-block;
-      text-transform: uppercase;
-    }
-
-    .event-title {
-      font-size: 1.4rem;
-      font-weight: bold;
-      margin-bottom: 0.8rem;
-      color: var(--text-dark);
-    }
-
-    .event-description {
-      color: var(--text-muted);
-      margin-bottom: 1.5rem;
-      line-height: 1.7;
-    }
-
-    .event-details {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .event-detail-item {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      color: var(--text-dark);
-      font-weight: 500;
-    }
-
-    .detail-icon {
-      width: 32px;
-      height: 32px;
-      background: #dbeafe;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-    }
-
-    .badge {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: linear-gradient(135deg, var(--accent-yellow), #FFA500);
-      color: var(--primary-blue);
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: bold;
-      z-index: 10;
-      animation: pulse 2s infinite;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 8px;
-      background: var(--border-color);
-      border-radius: 10px;
-      overflow: hidden;
-      margin-top: 0.5rem;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--secondary-blue), var(--primary-blue));
-      border-radius: 10px;
-      transition: width 1s ease;
-    }
-
-    /* ===== STATS SECTION ===== */
-    .stats-section {
-      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-      color: var(--text-light);
-      padding: 4rem 2rem;
-      margin: 3rem 0;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 2rem;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .stat-card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      padding: 2rem;
-      border-radius: 16px;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-
-    .stat-card:hover {
-      transform: scale(1.05);
-      background: rgba(255, 255, 255, 0.15);
-    }
-
-    .stat-icon {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .stat-value {
-      font-size: 3rem;
-      font-weight: bold;
-      color: var(--text-light);
-    }
-
-    .stat-label {
-      font-size: 1.1rem;
-      color: #bfdbfe;
-      font-weight: 600;
-    }
-
-    /* ===== DEPARTMENT CARDS ===== */
-    .department-card {
-      background: var(--white);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px var(--shadow);
-      transition: all 0.3s ease;
-    }
-
-    .department-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 12px 40px var(--shadow);
-    }
-
-    .department-image {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-    }
-
-    .department-content {
-      padding: 1.5rem;
-    }
-
-    .department-name {
-      font-size: 1.5rem;
-      font-weight: bold;
-      margin-bottom: 0.8rem;
-      color: var(--text-dark);
-    }
-
-    .department-description {
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-      line-height: 1.7;
-    }
-
-    .department-stats {
-      display: flex;
-      gap: 1.5rem;
-      margin: 1rem 0;
-      padding: 1rem;
-      background: var(--light-bg);
-      border-radius: 8px;
-    }
-
-    .dept-stat {
-      text-align: center;
-      flex: 1;
-    }
-
-    .dept-stat-value {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: var(--primary-blue);
-    }
-
-    .dept-stat-label {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    /* ===== FORMS & MODALS ===== */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 2000;
-      justify-content: center;
-      align-items: center;
-      padding: 1rem;
-    }
-
-    .modal.active {
-      display: flex;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .modal-content {
-      background: var(--white);
-      padding: 2.5rem;
-      border-radius: 20px;
-      max-width: 500px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-      animation: slideInRight 0.4s ease;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .modal-title {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: var(--text-dark);
-    }
-
-    .close-btn {
-      background: none;
-      border: none;
-      font-size: 2rem;
-      cursor: pointer;
-      color: var(--text-muted);
-      transition: all 0.3s ease;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-    }
-
-    .close-btn:hover {
-      background: var(--border-color);
-      color: var(--text-dark);
-      transform: rotate(90deg);
-    }
-
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-      color: var(--text-dark);
-    }
-
-    .form-input,
-    .form-select,
-    .form-textarea {
-      width: 100%;
-      padding: 0.8rem;
-      border: 2px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 1rem;
-      background: var(--light-bg);
-      color: var(--text-dark);
-      transition: all 0.3s ease;
-    }
-
-    .form-input:focus,
-    .form-select:focus,
-    .form-textarea:focus {
-      outline: none;
-      border-color: var(--secondary-blue);
-      box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
-    }
-
-    .form-textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
-
-    /* ===== BUTTONS ===== */
-    .btn {
-      padding: 0.8rem 1.5rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 1rem;
-    }
-
-    .btn-full {
-      width: 100%;
-    }
-
-    .btn-blue {
-      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-      color: var(--text-light);
-    }
-
-    .btn-blue:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0, 61, 130, 0.3);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 2px solid var(--primary-blue);
-      color: var(--primary-blue);
-    }
-
-    .btn-outline:hover {
-      background: var(--primary-blue);
-      color: var(--text-light);
-    }
-
-    .btn-danger {
-      background: #ef4444;
-      color: white;
-    }
-
-    .btn-danger:hover {
-      background: #dc2626;
-    }
-
-    /* ===== FOOTER ===== */
-    footer {
-      background: linear-gradient(135deg, #1e293b, var(--primary-blue), #1e293b);
-      color: var(--text-light);
-      padding: 3rem 2rem 1.5rem 2rem;
-      border-top: 4px solid var(--accent-yellow);
-    }
-
-    .footer-content {
-      max-width: 1400px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .footer-section h4 {
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
-      border-bottom: 2px solid var(--accent-yellow);
-      padding-bottom: 0.5rem;
-      display: inline-block;
-    }
-
-    .footer-section ul {
-      list-style: none;
-    }
-
-    .footer-section li {
-      margin-bottom: 0.5rem;
-    }
-
-    .footer-section a {
-      color: #bfdbfe;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .footer-section a:hover {
-      color: var(--accent-yellow);
-    }
-
-    .footer-bottom {
-      text-align: center;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      color: #bfdbfe;
-    }
-
-    /* ===== CONTACT FORM ===== */
-    .contact-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .contact-info {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: start;
-      gap: 1rem;
-      padding: 1.5rem;
-      background: var(--white);
-      border-radius: 12px;
-      box-shadow: 0 4px 15px var(--shadow);
-    }
-
-    .contact-icon {
-      font-size: 2rem;
-      color: var(--primary-blue);
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 2.5rem;
-      }
-
-      .hero p {
-        font-size: 1.1rem;
-      }
-
-      .section-title {
-        font-size: 2rem;
-      }
-
-      .contact-container {
-        grid-template-columns: 1fr;
-      }
-
-      .nav-btn {
-        padding: 0.5rem 0.8rem;
-        font-size: 0.85rem;
-      }
-
-      .logo-text {
-        font-size: 1.2rem;
-      }
-
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    /* ===== UTILITY CLASSES ===== */
-    .hidden {
-      display: none !important;
-    }
-
-    .flex {
-      display: flex;
-    }
-
-    .gap-1 {
-      gap: 0.5rem;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Engineering Faculty Portal</title>
+
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --primary-blue: #003d82;
+            --secondary-blue: #0056b3;
+            --accent-yellow: #FFD700;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --text-dark: #1e293b;
+            --text-light: #ffffff;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: rgba(0, 61, 130, 0.1);
+            --gradient-bg: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f8fafc 100%);
+        }
+
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --primary-blue: #0056b3;
+            --secondary-blue: #003d82;
+            --accent-yellow: #FFC107;
+            --light-bg: #0f172a;
+            --white: #1e293b;
+            --text-dark: #f1f5f9;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --gradient-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        }
+
+        /* ===== RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--gradient-bg);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .animate-slideIn {
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* ===== HEADER & NAVIGATION ===== */
+        header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--text-light);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 4px solid var(--accent-yellow);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-img {
+            height: 50px;
+            background: white;
+            padding: 0.3rem;
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-light);
+        }
+
+        nav {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn.active {
+            background: var(--accent-yellow);
+            color: var(--primary-blue);
+            border-color: var(--accent-yellow);
+        }
+
+        .dark-mode-toggle {
+            background: var(--accent-yellow);
+            color: var(--primary-blue);
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            animation: glow 1s infinite;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue), var(--primary-blue));
+            color: var(--text-light);
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            color: var(--text-light);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: #e0f2ff;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-yellow), #FFA500);
+            color: var(--primary-blue);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--text-light);
+            padding: 1rem 2rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+        }
+
+        /* ===== CONTAINER & SECTIONS ===== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ===== CARDS & GRID ===== */
+        .grid {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px var(--shadow);
+            border-color: var(--secondary-blue);
+        }
+
+        .event-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-header {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            padding: 2rem;
+            margin: -2rem -2rem 1.5rem -2rem;
+            text-align: center;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .event-icon {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-type {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary-blue);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+        .event-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+            color: var(--text-dark);
+        }
+
+        .event-description {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .event-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .detail-icon {
+            width: 32px;
+            height: 32px;
+            background: #dbeafe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, var(--accent-yellow), #FFA500);
+            color: var(--primary-blue);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            z-index: 10;
+            animation: pulse 2s infinite;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary-blue), var(--primary-blue));
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        /* ===== STATS SECTION ===== */
+        .stats-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--text-light);
+            padding: 4rem 2rem;
+            margin: 3rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--text-light);
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #bfdbfe;
+            font-weight: 600;
+        }
+
+        /* ===== DEPARTMENT CARDS ===== */
+        .department-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .department-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px var(--shadow);
+        }
+
+        .department-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .department-content {
+            padding: 1.5rem;
+        }
+
+        .department-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+            color: var(--text-dark);
+        }
+
+        .department-description {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .department-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--light-bg);
+            border-radius: 8px;
+        }
+
+        .dept-stat {
+            text-align: center;
+            flex: 1;
+        }
+
+        .dept-stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+
+        .dept-stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* ===== FORMS & MODALS ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideInRight 0.4s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-btn:hover {
+            background: var(--border-color);
+            color: var(--text-dark);
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--light-bg);
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn-blue {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--text-light);
+        }
+
+        .btn-blue:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 61, 130, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-blue);
+            color: var(--text-light);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: linear-gradient(135deg, #1e293b, var(--primary-blue), #1e293b);
+            color: var(--text-light);
+            padding: 3rem 2rem 1.5rem 2rem;
+            border-top: 4px solid var(--accent-yellow);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--accent-yellow);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #bfdbfe;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-yellow);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: #bfdbfe;
+        }
+
+        /* ===== CONTACT FORM ===== */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            color: var(--primary-blue);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            .logo-text {
+                font-size: 1.2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .hidden {
+            display: none !important;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .gap-1 {
+            gap: 0.5rem;
+        }
+    </style>
 </head>
 
 <body>
-  <!-- Header -->
-  <header>
-    <div class="header-container">
-      <div class="logo-section">
-        <img src="https://lms.iukl.edu.my/lms/version/2/images/logo/klust_color.png" alt="University Logo"
-          class="logo-img" />
-        <div class="logo-text">🎓 Engineering Faculty</div>
-      </div>
-      <nav>
-        <button class="nav-btn active" data-section="home">🏠 Home</button>
-        <button class="nav-btn" data-section="events">📅 Events</button>
-        <button class="nav-btn" data-section="departments">🏛️ Departments</button>
-        <button class="nav-btn" data-section="contact">✉️ Contact</button>
-        <button class="nav-btn" data-section="manage" id="manageBtn">🔐 Manage</button>
-        <button class="dark-mode-toggle" id="darkModeToggle">🌙</button>
-      </nav>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <img src="https://lms.iukl.edu.my/lms/version/2/images/logo/klust_color.png" alt="University Logo"
+                    class="logo-img" />
+                <div class="logo-text">🎓 Engineering Faculty</div>
+            </div>
+            <nav>
+                <button class="nav-btn active" data-section="home">🏠 Home</button>
+                <button class="nav-btn" data-section="events">📅 Events</button>
+                <button class="nav-btn" data-section="departments">🏛️ Departments</button>
+                <button class="nav-btn" data-section="contact">✉️ Contact</button>
+                <button class="nav-btn" data-section="manage" id="manageBtn">🔐 Manage</button>
+                <button class="dark-mode-toggle" id="darkModeToggle">🌙</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="mainContent"></main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="https://lms.iukl.edu.my/lms/version/2/images/logo/klust_color.png" alt="University Logo"
+                    class="logo-img" style="margin-bottom: 1rem;" />
+                <p style="color: #bfdbfe;">Engineering Faculty - Shaping the future through innovation and excellence in
+                    education</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#" data-section="home">🏠 Home</a></li>
+                    <li><a href="#" data-section="events">📅 Events</a></li>
+                    <li><a href="#" data-section="departments">🏛️ Departments</a></li>
+                    <li><a href="#" data-section="contact">✉️ Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <ul>
+                    <li>📧 engineering@university.edu</li>
+                    <li>📞 +60 3-1234 5678</li>
+                    <li>📍 Engineering Faculty Building</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="currentYear"></span> Engineering Faculty. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🔐 Staff Login</h2>
+                <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="staff@university.edu"
+                        required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="Enter password"
+                        required />
+                </div>
+                <button type="submit" class="btn btn-blue btn-full">Login</button>
+                <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                    Demo: Use any email with password "staff123"
+                </p>
+            </form>
+        </div>
     </div>
-  </header>
 
-  <!-- Main Content Area -->
-  <main id="mainContent"></main>
+    <!-- Event Registration Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">📝 Register for Event</h2>
+                <button class="close-btn" onclick="closeModal('eventModal')">&times;</button>
+            </div>
+            <form id="eventRegistrationForm">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" id="participantName" required />
+                </div>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-content">
-      <div class="footer-section">
-        <img src="https://lms.iukl.edu.my/lms/version/2/images/logo/klust_color.png" alt="University Logo" class="logo-img"
-          style="margin-bottom: 1rem;" />
-        <p style="color: #bfdbfe;">Engineering Faculty - Shaping the future through innovation and excellence in
-          education</p>
-      </div>
-      <div class="footer-section">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="#" data-section="home">🏠 Home</a></li>
-          <li><a href="#" data-section="events">📅 Events</a></li>
-          <li><a href="#" data-section="departments">🏛️ Departments</a></li>
-          <li><a href="#" data-section="contact">✉️ Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h4>Contact Info</h4>
-        <ul>
-          <li>📧 engineering@university.edu</li>
-          <li>📞 +60 3-1234 5678</li>
-          <li>📍 Engineering Faculty Building</li>
-        </ul>
-      </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="participantEmail" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" class="form-input" id="participantPhone" required />
+                </div>
+
+                <button type="submit" class="btn btn-blue btn-full">Register Now</button>
+            </form>
+        </div>
     </div>
-    <div class="footer-bottom">
-      <p>&copy; <span id="currentYear"></span> Engineering Faculty. All rights reserved.</p>
+
+    <!-- Contact Form Modal -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">✉️ Send Message</h2>
+                <button class="close-btn" onclick="closeModal('contactModal')">&times;</button>
+            </div>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-input" id="contactName" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="contactEmail" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Department</label>
+                    <select class="form-select" id="contactDepartment" required>
+                        <option value="">Select Department</option>
+                        <option value="civil">Civil Engineering</option>
+                        <option value="mechanical">Mechanical Engineering</option>
+                        <option value="electrical">Electrical Engineering</option>
+                        <option value="computer">Computer Engineering</option>
+                        <option value="chemical">Chemical Engineering</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-textarea" id="contactMessage" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-blue btn-full">Send Message</button>
+            </form>
+        </div>
     </div>
-  </footer>
 
-  <!-- Login Modal -->
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title">🔐 Staff Login</h2>
-        <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
-      </div>
-      <form id="loginForm">
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-input" id="loginEmail" placeholder="staff@university.edu" required />
+    <!-- Event Management Modal -->
+    <div id="eventManageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="eventManageTitle">➕ Add Event</h2>
+                <button class="close-btn" onclick="closeModal('eventManageModal')">&times;</button>
+            </div>
+            <form id="eventManageForm">
+                <div class="form-group">
+                    <label class="form-label">Event Title</label>
+                    <input type="text" class="form-input" id="eventTitle" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" id="eventDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="date" class="form-input" id="eventDate" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Time</label>
+                    <input type="time" class="form-input" id="eventTime" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Location</label>
+                    <input type="text" class="form-input" id="eventLocation" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Department</label>
+                    <select class="form-select" id="eventDepartment" required>
+                        <option value="civil">Civil Engineering</option>
+                        <option value="mechanical">Mechanical Engineering</option>
+                        <option value="electrical">Electrical Engineering</option>
+                        <option value="computer">Computer Engineering</option>
+                        <option value="chemical">Chemical Engineering</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Event Type</label>
+                    <select class="form-select" id="eventType" required>
+                        <option value="seminar">Seminar</option>
+                        <option value="workshop">Workshop</option>
+                        <option value="conference">Conference</option>
+                        <option value="competition">Competition</option>
+                        <option value="webinar">Webinar</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Capacity</label>
+                    <input type="number" class="form-input" id="eventCapacity" min="0" value="0" />
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem;">
+                        Tip: Use <b>0</b> for unlimited seats.
+                    </p>
+                </div>
+                <input type="hidden" id="eventEditId" />
+                <button type="submit" class="btn btn-blue btn-full">Save Event</button>
+            </form>
         </div>
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-input" id="loginPassword" placeholder="Enter password" required />
-        </div>
-        <button type="submit" class="btn btn-blue btn-full">Login</button>
-        <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">
-          Demo: Use any email with password "staff123"
-        </p>
-      </form>
     </div>
-  </div>
 
-  <!-- Event Registration Modal -->
-  <div id="eventModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title">📝 Register for Event</h2>
-        <button class="close-btn" onclick="closeModal('eventModal')">&times;</button>
-      </div>
-      <form id="eventRegistrationForm">
-        <div class="form-group">
-          <label class="form-label">Full Name</label>
-          <input type="text" class="form-input" id="participantName" required />
-        </div>
+    <script>
+        // ===== EMAILJS SETTINGS =====
+        const EMAILJS_PUBLIC_KEY = "d9IT7uMZf8i1YmPOGNAFU";
+        const EMAILJS_SERVICE_ID = "service_9im0w68";
+        const EMAILJS_TEMPLATE_EVENT = "template_tkqq1vv";
 
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-input" id="participantEmail" required />
-        </div>
+        // Optional: if you want contact form email too, put your template id here:
+        // Create a template in EmailJS with variables: from_name, from_email, department, message
+        const EMAILJS_TEMPLATE_CONTACT = "template_contact"; // <-- change OR leave as-is and it will fallback to alert only
 
-        <div class="form-group">
-          <label class="form-label">Phone</label>
-          <input type="tel" class="form-input" id="participantPhone" required />
-        </div>
+        // ===== DATA MANAGEMENT =====
+        const eventSymbols = {
+            seminar: "📚",
+            workshop: "🔧",
+            conference: "🎓",
+            competition: "🏆",
+            webinar: "💻",
+        };
 
-        <button type="submit" class="btn btn-blue btn-full">Register Now</button>
-      </form>
-    </div>
-  </div>
+        const departmentNames = {
+            civil: "Civil Engineering",
+            mechanical: "Mechanical Engineering",
+            electrical: "Electrical Engineering",
+            computer: "Computer Engineering",
+            chemical: "Chemical Engineering",
+        };
 
-  <!-- Contact Form Modal -->
-  <div id="contactModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title">✉️ Send Message</h2>
-        <button class="close-btn" onclick="closeModal('contactModal')">&times;</button>
-      </div>
-      <form id="contactForm">
-        <div class="form-group">
-          <label class="form-label">Name</label>
-          <input type="text" class="form-input" id="contactName" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-input" id="contactEmail" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Department</label>
-          <select class="form-select" id="contactDepartment" required>
-            <option value="">Select Department</option>
-            <option value="civil">Civil Engineering</option>
-            <option value="mechanical">Mechanical Engineering</option>
-            <option value="electrical">Electrical Engineering</option>
-            <option value="computer">Computer Engineering</option>
-            <option value="chemical">Chemical Engineering</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Message</label>
-          <textarea class="form-textarea" id="contactMessage" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-blue btn-full">Send Message</button>
-      </form>
-    </div>
-  </div>
+        const departmentImages = {
+            civil: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400",
+            mechanical: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400",
+            electrical: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400",
+            computer: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400",
+            chemical: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400",
+        };
 
-  <!-- Event Management Modal -->
-  <div id="eventManageModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title" id="eventManageTitle">➕ Add Event</h2>
-        <button class="close-btn" onclick="closeModal('eventManageModal')">&times;</button>
-      </div>
-      <form id="eventManageForm">
-        <div class="form-group">
-          <label class="form-label">Event Title</label>
-          <input type="text" class="form-input" id="eventTitle" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Description</label>
-          <textarea class="form-textarea" id="eventDescription" required></textarea>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Date</label>
-          <input type="date" class="form-input" id="eventDate" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Time</label>
-          <input type="time" class="form-input" id="eventTime" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Location</label>
-          <input type="text" class="form-input" id="eventLocation" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Department</label>
-          <select class="form-select" id="eventDepartment" required>
-            <option value="civil">Civil Engineering</option>
-            <option value="mechanical">Mechanical Engineering</option>
-            <option value="electrical">Electrical Engineering</option>
-            <option value="computer">Computer Engineering</option>
-            <option value="chemical">Chemical Engineering</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Event Type</label>
-          <select class="form-select" id="eventType" required>
-            <option value="seminar">Seminar</option>
-            <option value="workshop">Workshop</option>
-            <option value="conference">Conference</option>
-            <option value="competition">Competition</option>
-            <option value="webinar">Webinar</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Capacity</label>
-          <input type="number" class="form-input" id="eventCapacity" min="0" value="0" />
-          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem;">
-            Tip: Use <b>0</b> for unlimited seats.
-          </p>
-        </div>
-        <input type="hidden" id="eventEditId" />
-        <button type="submit" class="btn btn-blue btn-full">Save Event</button>
-      </form>
-    </div>
-  </div>
+        let currentSection = "home";
+        let isStaff = false;
+        let selectedEventForRegistration = null;
 
-  <script>
-    // ===== EMAILJS SETTINGS =====
-    const EMAILJS_PUBLIC_KEY = "d9IT7uMZf8i1YmPOGNAFU";
-    const EMAILJS_SERVICE_ID = "service_9im0w68";
-    const EMAILJS_TEMPLATE_EVENT = "template_tkqq1vv";
+        function safeParseJSON(value, fallback) {
+            try {
+                return JSON.parse(value);
+            } catch {
+                return fallback;
+            }
+        }
 
-    // Optional: if you want contact form email too, put your template id here:
-    // Create a template in EmailJS with variables: from_name, from_email, department, message
-    const EMAILJS_TEMPLATE_CONTACT = "template_contact"; // <-- change OR leave as-is and it will fallback to alert only
+        function formatTimeDisplay(timeStr) {
+            // Accepts "10:00 AM" or "14:00"
+            if (!timeStr) return "";
+            if (timeStr.toUpperCase().includes("AM") || timeStr.toUpperCase().includes("PM")) return timeStr;
 
-    // ===== DATA MANAGEMENT =====
-    const eventSymbols = {
-      seminar: "📚",
-      workshop: "🔧",
-      conference: "🎓",
-      competition: "🏆",
-      webinar: "💻",
-    };
+            // "HH:MM" -> "h:mm AM/PM"
+            const [hh, mm] = timeStr.split(":").map(Number);
+            if (Number.isNaN(hh) || Number.isNaN(mm)) return timeStr;
 
-    const departmentNames = {
-      civil: "Civil Engineering",
-      mechanical: "Mechanical Engineering",
-      electrical: "Electrical Engineering",
-      computer: "Computer Engineering",
-      chemical: "Chemical Engineering",
-    };
+            const date = new Date();
+            date.setHours(hh, mm, 0, 0);
+            return date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+        }
 
-    const departmentImages = {
-      civil: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400",
-      mechanical: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400",
-      electrical: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400",
-      computer: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400",
-      chemical: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400",
-    };
+        function initializeData() {
+            if (!localStorage.getItem("departments")) {
+                const departments = [
+                    { id: "civil", name: "Civil Engineering", description: "Building the foundation of modern infrastructure with sustainable and innovative solutions.", studentCount: 520, staffCount: 32, contact: "civil@university.edu" },
+                    { id: "mechanical", name: "Mechanical Engineering", description: "Designing and developing mechanical systems that power the world.", studentCount: 485, staffCount: 28, contact: "mechanical@university.edu" },
+                    { id: "electrical", name: "Electrical Engineering", description: "Innovating electrical systems and electronics for a connected future.", studentCount: 510, staffCount: 30, contact: "electrical@university.edu" },
+                    { id: "computer", name: "Computer Engineering", description: "Advancing technology through software and hardware integration.", studentCount: 625, staffCount: 35, contact: "computer@university.edu" },
+                    { id: "chemical", name: "Chemical Engineering", description: "Transforming raw materials into valuable products through chemical processes.", studentCount: 290, staffCount: 15, contact: "chemical@university.edu" },
+                ];
+                localStorage.setItem("departments", JSON.stringify(departments));
+            }
 
-    let currentSection = "home";
-    let isStaff = false;
-    let selectedEventForRegistration = null;
+            if (!localStorage.getItem("events")) {
+                const events = [
+                    { id: "1", title: "Advanced Structural Engineering Seminar", description: "Learn about the latest developments in structural analysis and design techniques.", date: "2026-02-15", time: "10:00 AM", location: "Engineering Hall A", departmentId: "civil", type: "seminar", capacity: 100, participants: [] },
+                    { id: "2", title: "Robotics Workshop", description: "Hands-on workshop on building and programming autonomous robots.", date: "2026-02-20", time: "2:00 PM", location: "Mechanical Lab 3", departmentId: "mechanical", type: "workshop", capacity: 50, participants: [] },
+                    { id: "3", title: "International Power Systems Conference", description: "Global conference on renewable energy and smart grid technologies.", date: "2026-03-05", time: "9:00 AM", location: "Main Auditorium", departmentId: "electrical", type: "conference", capacity: 300, participants: [] },
+                    { id: "4", title: "Hackathon 2026", description: "48-hour coding competition to solve real-world engineering problems.", date: "2026-03-12", time: "8:00 AM", location: "Computer Lab Building", departmentId: "computer", type: "competition", capacity: 120, participants: [] },
+                    { id: "5", title: "Green Chemistry Webinar", description: "Online seminar on sustainable chemical processes and environmental protection.", date: "2026-02-28", time: "3:00 PM", location: "Online (Zoom)", departmentId: "chemical", type: "webinar", capacity: 200, participants: [] },
+                    { id: "6", title: "Bridge Design Competition", description: "Annual competition for designing the most efficient and innovative bridge structures.", date: "2026-03-18", time: "10:00 AM", location: "Civil Engineering Lab", departmentId: "civil", type: "competition", capacity: 80, participants: [] },
+                ];
+                localStorage.setItem("events", JSON.stringify(events));
+            }
+        }
 
-    function safeParseJSON(value, fallback) {
-      try {
-        return JSON.parse(value);
-      } catch {
-        return fallback;
-      }
-    }
+        function getDepartments() {
+            return safeParseJSON(localStorage.getItem("departments"), []);
+        }
 
-    function formatTimeDisplay(timeStr) {
-      // Accepts "10:00 AM" or "14:00"
-      if (!timeStr) return "";
-      if (timeStr.toUpperCase().includes("AM") || timeStr.toUpperCase().includes("PM")) return timeStr;
+        function getEvents() {
+            return safeParseJSON(localStorage.getItem("events"), []);
+        }
 
-      // "HH:MM" -> "h:mm AM/PM"
-      const [hh, mm] = timeStr.split(":").map(Number);
-      if (Number.isNaN(hh) || Number.isNaN(mm)) return timeStr;
+        function saveEvents(events) {
+            localStorage.setItem("events", JSON.stringify(events));
+        }
 
-      const date = new Date();
-      date.setHours(hh, mm, 0, 0);
-      return date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
-    }
+        function getEventById(id) {
+            return getEvents().find((e) => e.id === id);
+        }
 
-    function initializeData() {
-      if (!localStorage.getItem("departments")) {
-        const departments = [
-          { id: "civil", name: "Civil Engineering", description: "Building the foundation of modern infrastructure with sustainable and innovative solutions.", studentCount: 520, staffCount: 32, contact: "civil@university.edu" },
-          { id: "mechanical", name: "Mechanical Engineering", description: "Designing and developing mechanical systems that power the world.", studentCount: 485, staffCount: 28, contact: "mechanical@university.edu" },
-          { id: "electrical", name: "Electrical Engineering", description: "Innovating electrical systems and electronics for a connected future.", studentCount: 510, staffCount: 30, contact: "electrical@university.edu" },
-          { id: "computer", name: "Computer Engineering", description: "Advancing technology through software and hardware integration.", studentCount: 625, staffCount: 35, contact: "computer@university.edu" },
-          { id: "chemical", name: "Chemical Engineering", description: "Transforming raw materials into valuable products through chemical processes.", studentCount: 290, staffCount: 15, contact: "chemical@university.edu" },
-        ];
-        localStorage.setItem("departments", JSON.stringify(departments));
-      }
+        // ===== NAVIGATION =====
+        function navigateTo(section) {
+            if (section === "manage" && !isStaff) {
+                openModal("loginModal");
+                return;
+            }
 
-      if (!localStorage.getItem("events")) {
-        const events = [
-          { id: "1", title: "Advanced Structural Engineering Seminar", description: "Learn about the latest developments in structural analysis and design techniques.", date: "2026-02-15", time: "10:00 AM", location: "Engineering Hall A", departmentId: "civil", type: "seminar", capacity: 100, participants: [] },
-          { id: "2", title: "Robotics Workshop", description: "Hands-on workshop on building and programming autonomous robots.", date: "2026-02-20", time: "2:00 PM", location: "Mechanical Lab 3", departmentId: "mechanical", type: "workshop", capacity: 50, participants: [] },
-          { id: "3", title: "International Power Systems Conference", description: "Global conference on renewable energy and smart grid technologies.", date: "2026-03-05", time: "9:00 AM", location: "Main Auditorium", departmentId: "electrical", type: "conference", capacity: 300, participants: [] },
-          { id: "4", title: "Hackathon 2026", description: "48-hour coding competition to solve real-world engineering problems.", date: "2026-03-12", time: "8:00 AM", location: "Computer Lab Building", departmentId: "computer", type: "competition", capacity: 120, participants: [] },
-          { id: "5", title: "Green Chemistry Webinar", description: "Online seminar on sustainable chemical processes and environmental protection.", date: "2026-02-28", time: "3:00 PM", location: "Online (Zoom)", departmentId: "chemical", type: "webinar", capacity: 200, participants: [] },
-          { id: "6", title: "Bridge Design Competition", description: "Annual competition for designing the most efficient and innovative bridge structures.", date: "2026-03-18", time: "10:00 AM", location: "Civil Engineering Lab", departmentId: "civil", type: "competition", capacity: 80, participants: [] },
-        ];
-        localStorage.setItem("events", JSON.stringify(events));
-      }
-    }
+            currentSection = section;
 
-    function getDepartments() {
-      return safeParseJSON(localStorage.getItem("departments"), []);
-    }
+            document.querySelectorAll(".nav-btn").forEach((btn) => {
+                btn.classList.remove("active");
+                if (btn.dataset.section === section) btn.classList.add("active");
+            });
 
-    function getEvents() {
-      return safeParseJSON(localStorage.getItem("events"), []);
-    }
+            renderSection();
+        }
 
-    function saveEvents(events) {
-      localStorage.setItem("events", JSON.stringify(events));
-    }
+        function renderSection() {
+            switch (currentSection) {
+                case "home":
+                    renderHomePage();
+                    break;
+                case "events":
+                    renderEventsPage();
+                    break;
+                case "departments":
+                    renderDepartmentsPage();
+                    break;
+                case "contact":
+                    renderContactPage();
+                    break;
+                case "manage":
+                    if (isStaff) renderManagePage();
+                    break;
+                default:
+                    renderHomePage();
+            }
+        }
 
-    function getEventById(id) {
-      return getEvents().find((e) => e.id === id);
-    }
+        // ===== HOME PAGE =====
+        function renderHomePage() {
+            const events = getEvents();
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
 
-    // ===== NAVIGATION =====
-    function navigateTo(section) {
-      if (section === "manage" && !isStaff) {
-        openModal("loginModal");
-        return;
-      }
+            const upcomingEvents = events
+                .filter((e) => {
+                    const d = new Date(e.date);
+                    d.setHours(0, 0, 0, 0);
+                    return d >= today;
+                })
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .slice(0, 6);
 
-      currentSection = section;
-
-      document.querySelectorAll(".nav-btn").forEach((btn) => {
-        btn.classList.remove("active");
-        if (btn.dataset.section === section) btn.classList.add("active");
-      });
-
-      renderSection();
-    }
-
-    function renderSection() {
-      switch (currentSection) {
-        case "home":
-          renderHomePage();
-          break;
-        case "events":
-          renderEventsPage();
-          break;
-        case "departments":
-          renderDepartmentsPage();
-          break;
-        case "contact":
-          renderContactPage();
-          break;
-        case "manage":
-          if (isStaff) renderManagePage();
-          break;
-        default:
-          renderHomePage();
-      }
-    }
-
-    // ===== HOME PAGE =====
-    function renderHomePage() {
-      const events = getEvents();
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      const upcomingEvents = events
-        .filter((e) => {
-          const d = new Date(e.date);
-          d.setHours(0, 0, 0, 0);
-          return d >= today;
-        })
-        .sort((a, b) => new Date(a.date) - new Date(b.date))
-        .slice(0, 6);
-
-      const mainContent = document.getElementById("mainContent");
-      mainContent.innerHTML = `
+            const mainContent = document.getElementById("mainContent");
+            mainContent.innerHTML = `
         <section class="hero">
           <div class="hero-content animate-fadeIn">
             <h1>✨ Engineering Faculty ✨</h1>
@@ -1238,13 +1240,13 @@
 
           <div class="grid">
             ${upcomingEvents.map((event, index) => {
-              const symbol = eventSymbols[event.type] || "📌";
-              const capacity = Number(event.capacity) || 0; // 0 = unlimited
-              const filled = (event.participants || []).length;
-              const fillPercent = capacity > 0 ? (filled / capacity) * 100 : 0;
-              const isFilling = capacity > 0 && fillPercent > 70;
+                const symbol = eventSymbols[event.type] || "📌";
+                const capacity = Number(event.capacity) || 0; // 0 = unlimited
+                const filled = (event.participants || []).length;
+                const fillPercent = capacity > 0 ? (filled / capacity) * 100 : 0;
+                const isFilling = capacity > 0 && fillPercent > 70;
 
-              return `
+                return `
                 <div class="card event-card animate-slideIn" style="animation-delay:${index * 0.1}s">
                   ${index === 0 ? '<div class="badge">⚡ FEATURED</div>' : ''}
                   ${isFilling ? '<div class="badge" style="top:3.5rem;">🔥 FILLING FAST</div>' : ''}
@@ -1260,7 +1262,7 @@
                   <div class="event-details">
                     <div class="event-detail-item">
                       <div class="detail-icon">📅</div>
-                      <span>${new Date(event.date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</span>
+                      <span>${new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                     </div>
                     <div class="event-detail-item">
                       <div class="detail-icon">🕐</div>
@@ -1363,16 +1365,16 @@
           </div>
         </section>
       `;
-    }
+        }
 
-    // ===== EVENTS PAGE =====
-    function renderEventsPage() {
-      const events = getEvents();
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+        // ===== EVENTS PAGE =====
+        function renderEventsPage() {
+            const events = getEvents();
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
 
-      const mainContent = document.getElementById("mainContent");
-      mainContent.innerHTML = `
+            const mainContent = document.getElementById("mainContent");
+            mainContent.innerHTML = `
         <section class="hero" style="padding: 3rem 2rem;">
           <div class="hero-content">
             <h1 style="font-size: 2.5rem;">📅 Faculty Events</h1>
@@ -1383,18 +1385,18 @@
         <section class="container">
           <div class="grid">
             ${events.length > 0 ? events.map((event) => {
-              const symbol = eventSymbols[event.type] || "📌";
-              const capacity = Number(event.capacity) || 0;
-              const filled = (event.participants || []).length;
-              const fillPercent = capacity > 0 ? (filled / capacity) * 100 : 0;
+                const symbol = eventSymbols[event.type] || "📌";
+                const capacity = Number(event.capacity) || 0;
+                const filled = (event.participants || []).length;
+                const fillPercent = capacity > 0 ? (filled / capacity) * 100 : 0;
 
-              const d = new Date(event.date);
-              d.setHours(0, 0, 0, 0);
-              const isPast = d < today;
+                const d = new Date(event.date);
+                d.setHours(0, 0, 0, 0);
+                const isPast = d < today;
 
-              const isFilling = capacity > 0 && fillPercent > 70;
+                const isFilling = capacity > 0 && fillPercent > 70;
 
-              return `
+                return `
                 <div class="card event-card">
                   ${isFilling && !isPast ? '<div class="badge">🔥 FILLING FAST</div>' : ''}
                   ${isPast ? '<div class="badge" style="background: #94a3b8;">✓ Completed</div>' : ''}
@@ -1410,7 +1412,7 @@
                   <div class="event-details">
                     <div class="event-detail-item">
                       <div class="detail-icon">📅</div>
-                      <span>${new Date(event.date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</span>
+                      <span>${new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                     </div>
                     <div class="event-detail-item">
                       <div class="detail-icon">🕐</div>
@@ -1455,14 +1457,14 @@
           </div>
         </section>
       `;
-    }
+        }
 
-    // ===== DEPARTMENTS PAGE =====
-    function renderDepartmentsPage() {
-      const departments = getDepartments();
+        // ===== DEPARTMENTS PAGE =====
+        function renderDepartmentsPage() {
+            const departments = getDepartments();
 
-      const mainContent = document.getElementById("mainContent");
-      mainContent.innerHTML = `
+            const mainContent = document.getElementById("mainContent");
+            mainContent.innerHTML = `
         <section class="hero" style="padding: 3rem 2rem;">
           <div class="hero-content">
             <h1 style="font-size: 2.5rem;">🏛️ Our Departments</h1>
@@ -1506,12 +1508,12 @@
           </div>
         </section>
       `;
-    }
+        }
 
-    // ===== CONTACT PAGE =====
-    function renderContactPage() {
-      const mainContent = document.getElementById("mainContent");
-      mainContent.innerHTML = `
+        // ===== CONTACT PAGE =====
+        function renderContactPage() {
+            const mainContent = document.getElementById("mainContent");
+            mainContent.innerHTML = `
         <section class="hero" style="padding: 3rem 2rem;">
           <div class="hero-content">
             <h1 style="font-size: 2.5rem;">✉️ Contact Us</h1>
@@ -1567,19 +1569,19 @@
           </div>
         </section>
       `;
-    }
+        }
 
-    // ===== MANAGE PAGE =====
-    function renderManagePage() {
-      if (!isStaff) {
-        navigateTo("home");
-        return;
-      }
+        // ===== MANAGE PAGE =====
+        function renderManagePage() {
+            if (!isStaff) {
+                navigateTo("home");
+                return;
+            }
 
-      const events = getEvents();
-      const mainContent = document.getElementById("mainContent");
+            const events = getEvents();
+            const mainContent = document.getElementById("mainContent");
 
-      mainContent.innerHTML = `
+            mainContent.innerHTML = `
         <section class="hero" style="padding: 3rem 2rem;">
           <div class="hero-content">
             <h1 style="font-size: 2.5rem;">🔐 Event Management</h1>
@@ -1594,10 +1596,10 @@
 
           <div class="grid">
             ${events.map((event) => {
-              const capacity = Number(event.capacity) || 0;
-              const filled = (event.participants || []).length;
+                const capacity = Number(event.capacity) || 0;
+                const filled = (event.participants || []).length;
 
-              return `
+                return `
                 <div class="card">
                   <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:1rem;">
                     <h3 style="font-size:1.3rem; font-weight:bold; color: var(--text-dark);">${event.title}</h3>
@@ -1628,291 +1630,288 @@
           </div>
         </section>
       `;
-    }
-
-    // ===== MODALS =====
-    function openModal(modalId) {
-      document.getElementById(modalId).classList.add("active");
-    }
-
-    function closeModal(modalId) {
-      document.getElementById(modalId).classList.remove("active");
-
-      if (modalId === "eventManageModal") {
-        document.getElementById("eventManageForm").reset();
-        document.getElementById("eventEditId").value = "";
-        document.getElementById("eventManageTitle").textContent = "➕ Add Event";
-      }
-    }
-
-    // ===== ACTIONS =====
-    function registerForEvent(eventId) {
-      selectedEventForRegistration = eventId;
-      openModal("eventModal");
-    }
-
-    function viewDepartmentEvents(departmentId) {
-      navigateTo("events");
-      // optional: you can implement filtering later
-      // for now it just takes you to Events page
-    }
-
-    function openAddEventModal() {
-      document.getElementById("eventManageTitle").textContent = "➕ Add New Event";
-      document.getElementById("eventEditId").value = "";
-      document.getElementById("eventManageForm").reset();
-      openModal("eventManageModal");
-    }
-
-    function editEvent(eventId) {
-      const event = getEventById(eventId);
-      if (!event) return;
-
-      document.getElementById("eventManageTitle").textContent = "✏️ Edit Event";
-      document.getElementById("eventEditId").value = eventId;
-
-      document.getElementById("eventTitle").value = event.title || "";
-      document.getElementById("eventDescription").value = event.description || "";
-      document.getElementById("eventDate").value = event.date || "";
-
-      // If time is like "10:00 AM", we can't set it directly to <input type="time">
-      // We'll try to keep it if it's HH:MM, otherwise leave blank.
-      const timeVal = (event.time || "").trim();
-      document.getElementById("eventTime").value = (timeVal.includes(":") && !timeVal.toUpperCase().includes("AM") && !timeVal.toUpperCase().includes("PM")) ? timeVal : "";
-
-      document.getElementById("eventLocation").value = event.location || "";
-      document.getElementById("eventDepartment").value = event.departmentId || "civil";
-      document.getElementById("eventType").value = event.type || "seminar";
-      document.getElementById("eventCapacity").value = Number(event.capacity) || 0;
-
-      openModal("eventManageModal");
-    }
-
-    function deleteEvent(eventId) {
-      if (!confirm("Are you sure you want to delete this event?")) return;
-
-      let events = getEvents();
-      events = events.filter((e) => e.id !== eventId);
-      saveEvents(events);
-      renderManagePage();
-      alert("✅ Event deleted successfully!");
-    }
-
-    function toggleDarkMode() {
-      const html = document.documentElement;
-      const currentTheme = html.getAttribute("data-theme");
-      const button = document.getElementById("darkModeToggle");
-
-      if (currentTheme === "dark") {
-        html.removeAttribute("data-theme");
-        button.textContent = "🌙";
-        localStorage.setItem("darkMode", "false");
-      } else {
-        html.setAttribute("data-theme", "dark");
-        button.textContent = "☀️";
-        localStorage.setItem("darkMode", "true");
-      }
-    }
-
-    function updateManageButton() {
-      const manageBtn = document.getElementById("manageBtn");
-      manageBtn.textContent = isStaff ? "🔓 Manage" : "🔐 Staff Login";
-    }
-
-    function logout() {
-      isStaff = false;
-      localStorage.removeItem("isStaff");
-      updateManageButton();
-      navigateTo("home");
-      alert("✅ Logged out successfully!");
-    }
-
-    // ===== MAIN INIT =====
-    document.addEventListener("DOMContentLoaded", function () {
-      // EmailJS init (only once)
-      if (window.emailjs && emailjs.init) {
-        emailjs.init(EMAILJS_PUBLIC_KEY);
-      }
-
-      // Footer year
-      document.getElementById("currentYear").textContent = new Date().getFullYear();
-
-      initializeData();
-
-      isStaff = localStorage.getItem("isStaff") === "true";
-      updateManageButton();
-
-      renderSection();
-
-      // Nav buttons
-      document.querySelectorAll(".nav-btn").forEach((btn) => {
-        btn.addEventListener("click", function () {
-          navigateTo(this.dataset.section);
-        });
-      });
-
-      // Footer links
-      document.querySelectorAll("footer a[data-section]").forEach((link) => {
-        link.addEventListener("click", function (e) {
-          e.preventDefault();
-          navigateTo(this.dataset.section);
-        });
-      });
-
-      // Dark mode toggle
-      document.getElementById("darkModeToggle").addEventListener("click", toggleDarkMode);
-      if (localStorage.getItem("darkMode") === "true") {
-        document.documentElement.setAttribute("data-theme", "dark");
-        document.getElementById("darkModeToggle").textContent = "☀️";
-      }
-
-      // Login
-      document.getElementById("loginForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        const password = document.getElementById("loginPassword").value;
-
-        if (password === "staff123") {
-          isStaff = true;
-          localStorage.setItem("isStaff", "true");
-          closeModal("loginModal");
-          updateManageButton();
-          navigateTo("manage");
-          alert("✅ Login successful!");
-        } else {
-          alert("❌ Invalid credentials. Use password: staff123");
-        }
-      });
-
-      // Event registration + EmailJS
-      document.getElementById("eventRegistrationForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const name = document.getElementById("participantName").value.trim();
-        const email = document.getElementById("participantEmail").value.trim();
-        const phone = document.getElementById("participantPhone").value.trim();
-
-        let events = getEvents();
-        const eventIndex = events.findIndex((ev) => ev.id === selectedEventForRegistration);
-
-        if (eventIndex === -1) {
-          alert("❌ Event not found. Refresh the page and try again.");
-          return;
         }
 
-        if (!events[eventIndex].participants) events[eventIndex].participants = [];
-
-        const capacity = Number(events[eventIndex].capacity) || 0; // 0 = unlimited
-        if (capacity > 0 && events[eventIndex].participants.length >= capacity) {
-          alert("❌ Sorry, this event is at full capacity!");
-          return;
+        // ===== MODALS =====
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add("active");
         }
 
-        // Save local registration
-        events[eventIndex].participants.push({ name, email, phone, registeredAt: new Date().toISOString() });
-        saveEvents(events);
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove("active");
 
-        // Send email confirmation
-        emailjs
-          .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_EVENT, {
-            to_name: name,
-            to_email: email,
-            event_title: events[eventIndex].title,
-            event_date: new Date(events[eventIndex].date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-            event_time: formatTimeDisplay(events[eventIndex].time),
-            location: events[eventIndex].location,
-          })
-          .then(() => {
-            alert("✅ Registration successful! Confirmation email sent.");
-          })
-          .catch((err) => {
-            console.log("EmailJS error:", err);
-            alert("✅ Registration saved, but email failed to send (check EmailJS template variables / service/template IDs).");
-          });
+            if (modalId === "eventManageModal") {
+                document.getElementById("eventManageForm").reset();
+                document.getElementById("eventEditId").value = "";
+                document.getElementById("eventManageTitle").textContent = "➕ Add Event";
+            }
+        }
 
-        closeModal("eventModal");
-        this.reset();
-        renderSection();
-      });
+        // ===== ACTIONS =====
+        function registerForEvent(eventId) {
+            selectedEventForRegistration = eventId;
+            openModal("eventModal");
+        }
 
-      // Contact form (EmailJS optional)
-      document.getElementById("contactForm").addEventListener("submit", function (e) {
-        e.preventDefault();
+        function viewDepartmentEvents(departmentId) {
+            navigateTo("events");
+            // optional: you can implement filtering later
+            // for now it just takes you to Events page
+        }
 
-        const name = document.getElementById("contactName").value.trim();
-        const email = document.getElementById("contactEmail").value.trim();
-        const department = document.getElementById("contactDepartment").value;
-        const message = document.getElementById("contactMessage").value.trim();
+        function openAddEventModal() {
+            document.getElementById("eventManageTitle").textContent = "➕ Add New Event";
+            document.getElementById("eventEditId").value = "";
+            document.getElementById("eventManageForm").reset();
+            openModal("eventManageModal");
+        }
 
-        // If you don't have a contact template, we still show success.
-        // If you DO have one, change EMAILJS_TEMPLATE_CONTACT.
-        if (EMAILJS_TEMPLATE_CONTACT && EMAILJS_TEMPLATE_CONTACT !== "template_contact") {
-          emailjs
-            .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_CONTACT, {
-              from_name: name,
-              from_email: email,
-              department,
-              message,
-            })
-            .then(() => alert("✅ Message sent successfully!"))
-            .catch((err) => {
-              console.log("EmailJS contact error:", err);
-              alert("✅ Message saved, but email failed to send (check EmailJS template).");
+        function editEvent(eventId) {
+            const event = getEventById(eventId);
+            if (!event) return;
+
+            document.getElementById("eventManageTitle").textContent = "✏️ Edit Event";
+            document.getElementById("eventEditId").value = eventId;
+
+            document.getElementById("eventTitle").value = event.title || "";
+            document.getElementById("eventDescription").value = event.description || "";
+            document.getElementById("eventDate").value = event.date || "";
+
+            // If time is like "10:00 AM", we can't set it directly to <input type="time">
+            // We'll try to keep it if it's HH:MM, otherwise leave blank.
+            const timeVal = (event.time || "").trim();
+            document.getElementById("eventTime").value = (timeVal.includes(":") && !timeVal.toUpperCase().includes("AM") && !timeVal.toUpperCase().includes("PM")) ? timeVal : "";
+
+            document.getElementById("eventLocation").value = event.location || "";
+            document.getElementById("eventDepartment").value = event.departmentId || "civil";
+            document.getElementById("eventType").value = event.type || "seminar";
+            document.getElementById("eventCapacity").value = Number(event.capacity) || 0;
+
+            openModal("eventManageModal");
+        }
+
+        function deleteEvent(eventId) {
+            if (!confirm("Are you sure you want to delete this event?")) return;
+
+            let events = getEvents();
+            events = events.filter((e) => e.id !== eventId);
+            saveEvents(events);
+            renderManagePage();
+            alert("✅ Event deleted successfully!");
+        }
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute("data-theme");
+            const button = document.getElementById("darkModeToggle");
+
+            if (currentTheme === "dark") {
+                html.removeAttribute("data-theme");
+                button.textContent = "🌙";
+                localStorage.setItem("darkMode", "false");
+            } else {
+                html.setAttribute("data-theme", "dark");
+                button.textContent = "☀️";
+                localStorage.setItem("darkMode", "true");
+            }
+        }
+
+        function updateManageButton() {
+            const manageBtn = document.getElementById("manageBtn");
+            manageBtn.textContent = isStaff ? "🔓 Manage" : "🔐 Staff Login";
+        }
+
+        function logout() {
+            isStaff = false;
+            localStorage.removeItem("isStaff");
+            updateManageButton();
+            navigateTo("home");
+            alert("✅ Logged out successfully!");
+        }
+
+        // ===== MAIN INIT =====
+        document.addEventListener("DOMContentLoaded", function () {
+            // EmailJS init (only once)
+            if (window.emailjs && emailjs.init) {
+                emailjs.init(EMAILJS_PUBLIC_KEY);
+            }
+
+            // Footer year
+            document.getElementById("currentYear").textContent = new Date().getFullYear();
+
+            initializeData();
+
+            isStaff = localStorage.getItem("isStaff") === "true";
+            updateManageButton();
+
+            renderSection();
+
+            // Nav buttons
+            document.querySelectorAll(".nav-btn").forEach((btn) => {
+                btn.addEventListener("click", function () {
+                    navigateTo(this.dataset.section);
+                });
             });
-        } else {
-          alert("✅ Message sent successfully! We will get back to you soon.");
-        }
 
-        closeModal("contactModal");
-        this.reset();
-      });
+            // Footer links
+            document.querySelectorAll("footer a[data-section]").forEach((link) => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    navigateTo(this.dataset.section);
+                });
+            });
 
-      // Event management
-      document.getElementById("eventManageForm").addEventListener("submit", function (e) {
-        e.preventDefault();
+            // Dark mode toggle
+            document.getElementById("darkModeToggle").addEventListener("click", toggleDarkMode);
+            if (localStorage.getItem("darkMode") === "true") {
+                document.documentElement.setAttribute("data-theme", "dark");
+                document.getElementById("darkModeToggle").textContent = "☀️";
+            }
 
-        const eventId = document.getElementById("eventEditId").value;
+            // Login
+            document.getElementById("loginForm").addEventListener("submit", function (e) {
+                e.preventDefault();
+                const password = document.getElementById("loginPassword").value;
 
-        const eventData = {
-          title: document.getElementById("eventTitle").value.trim(),
-          description: document.getElementById("eventDescription").value.trim(),
-          date: document.getElementById("eventDate").value,
-          time: document.getElementById("eventTime").value, // HH:MM
-          location: document.getElementById("eventLocation").value.trim(),
-          departmentId: document.getElementById("eventDepartment").value,
-          type: document.getElementById("eventType").value,
-          capacity: Number(document.getElementById("eventCapacity").value) || 0,
-        };
+                if (password === "staff123") {
+                    isStaff = true;
+                    localStorage.setItem("isStaff", "true");
+                    closeModal("loginModal");
+                    updateManageButton();
+                    navigateTo("manage");
+                    alert("✅ Login successful!");
+                } else {
+                    alert("❌ Invalid credentials. Use password: staff123");
+                }
+            });
 
-        let events = getEvents();
+            // Event registration + EmailJS
+            document.getElementById("eventRegistrationForm").addEventListener("submit", function (e) {
+                e.preventDefault();
 
-        if (eventId) {
-          const index = events.findIndex((e) => e.id === eventId);
-          if (index !== -1) {
-            // Keep participants when editing
-            const keepParticipants = events[index].participants || [];
-            events[index] = { ...events[index], ...eventData, participants: keepParticipants };
-          }
-        } else {
-          eventData.id = Date.now().toString();
-          eventData.participants = [];
-          events.push(eventData);
-        }
+                const name = document.getElementById("participantName").value.trim();
+                const email = document.getElementById("participantEmail").value.trim();
+                const phone = document.getElementById("participantPhone").value.trim();
 
-        saveEvents(events);
-        closeModal("eventManageModal");
-        this.reset();
-        renderManagePage();
-        alert("✅ Event saved successfully!");
-      });
+                let events = getEvents();
+                const eventIndex = events.findIndex((ev) => ev.id === selectedEventForRegistration);
 
-      // Close modals by clicking outside
-      document.querySelectorAll(".modal").forEach((modal) => {
-        modal.addEventListener("click", function (e) {
-          if (e.target === this) closeModal(this.id);
-        });
-      });
-    });
-  </script>
+                if (eventIndex === -1) {
+                    alert("❌ Event not found. Refresh the page and try again.");
+                    return;
+                }
+
+                if (!events[eventIndex].participants) events[eventIndex].participants = [];
+
+                const capacity = Number(events[eventIndex].capacity) || 0; // 0 = unlimited
+                if (capacity > 0 && events[eventIndex].participants.length >= capacity) {
+                    alert("❌ Sorry, this event is at full capacity!");
+                    return;
+                }
+
+                // Save local registration
+                events[eventIndex].participants.push({ name, email, phone, registeredAt: new Date().toISOString() });
+                saveEvents(events);
+
+                // Send email confirmation
+                emailjs.send("service_9im0w68", "template_tkqq1vv", {
+                    to_name: name,
+                    to_email: email,
+                    event_title: events[eventIndex].title,
+                    event_date: new Date(events[eventIndex].date).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                    }),
+                })
+                    .then(() => {
+                        alert("✅ Registration successful! Confirmation email sent.");
+                    })
+                    .catch((err) => {
+                        console.log("EmailJS error:", err);
+                        alert("✅ Registration saved, but email failed. Check console.");
+                    });
+
+
+                // Contact form (EmailJS optional)
+                document.getElementById("contactForm").addEventListener("submit", function (e) {
+                    e.preventDefault();
+
+                    const name = document.getElementById("contactName").value.trim();
+                    const email = document.getElementById("contactEmail").value.trim();
+                    const department = document.getElementById("contactDepartment").value;
+                    const message = document.getElementById("contactMessage").value.trim();
+
+                    // If you don't have a contact template, we still show success.
+                    // If you DO have one, change EMAILJS_TEMPLATE_CONTACT.
+                    if (EMAILJS_TEMPLATE_CONTACT && EMAILJS_TEMPLATE_CONTACT !== "template_contact") {
+                        emailjs
+                            .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_CONTACT, {
+                                from_name: name,
+                                from_email: email,
+                                department,
+                                message,
+                            })
+                            .then(() => alert("✅ Message sent successfully!"))
+                            .catch((err) => {
+                                console.log("EmailJS contact error:", err);
+                                alert("✅ Message saved, but email failed to send (check EmailJS template).");
+                            });
+                    } else {
+                        alert("✅ Message sent successfully! We will get back to you soon.");
+                    }
+
+                    closeModal("contactModal");
+                    this.reset();
+                });
+
+                // Event management
+                document.getElementById("eventManageForm").addEventListener("submit", function (e) {
+                    e.preventDefault();
+
+                    const eventId = document.getElementById("eventEditId").value;
+
+                    const eventData = {
+                        title: document.getElementById("eventTitle").value.trim(),
+                        description: document.getElementById("eventDescription").value.trim(),
+                        date: document.getElementById("eventDate").value,
+                        time: document.getElementById("eventTime").value, // HH:MM
+                        location: document.getElementById("eventLocation").value.trim(),
+                        departmentId: document.getElementById("eventDepartment").value,
+                        type: document.getElementById("eventType").value,
+                        capacity: Number(document.getElementById("eventCapacity").value) || 0,
+                    };
+
+                    let events = getEvents();
+
+                    if (eventId) {
+                        const index = events.findIndex((e) => e.id === eventId);
+                        if (index !== -1) {
+                            // Keep participants when editing
+                            const keepParticipants = events[index].participants || [];
+                            events[index] = { ...events[index], ...eventData, participants: keepParticipants };
+                        }
+                    } else {
+                        eventData.id = Date.now().toString();
+                        eventData.participants = [];
+                        events.push(eventData);
+                    }
+
+                    saveEvents(events);
+                    closeModal("eventManageModal");
+                    this.reset();
+                    renderManagePage();
+                    alert("✅ Event saved successfully!");
+                });
+
+                // Close modals by clicking outside
+                document.querySelectorAll(".modal").forEach((modal) => {
+                    modal.addEventListener("click", function (e) {
+                        if (e.target === this) closeModal(this.id);
+                    });
+                });
+            });
+    </script>
 </body>
 
 </html>
