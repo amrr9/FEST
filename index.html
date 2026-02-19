@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+    (function () {
+        emailjs.init("d9IT7uMZf8i1YmPOGNAFU");
+    })();
+</script>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,39 +59,90 @@
 
         /* ===== ANIMATIONS ===== */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(30px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
         }
 
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
-            50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+            }
         }
 
-        .animate-fadeIn { animation: fadeIn 0.6s ease-out; }
-        .animate-slideIn { animation: slideInRight 0.5s ease-out; }
-        .animate-pulse { animation: pulse 2s infinite; }
-        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .animate-slideIn {
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
 
         /* ===== HEADER & NAVIGATION ===== */
         header {
@@ -192,7 +250,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
             background-size: 50px 50px;
             animation: float 20s linear infinite;
         }
@@ -208,7 +266,7 @@
             font-size: 3.5rem;
             font-weight: 900;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
             color: var(--text-light);
         }
 
@@ -599,7 +657,9 @@
             color: var(--text-dark);
         }
 
-        .form-input, .form-select, .form-textarea {
+        .form-input,
+        .form-select,
+        .form-textarea {
             width: 100%;
             padding: 0.8rem;
             border: 2px solid var(--border-color);
@@ -610,7 +670,9 @@
             transition: all 0.3s ease;
         }
 
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
             outline: none;
             border-color: var(--secondary-blue);
             box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
@@ -767,32 +829,78 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .hero p { font-size: 1.1rem; }
-            .section-title { font-size: 2rem; }
-            .contact-container { grid-template-columns: 1fr; }
-            .nav-btn { padding: 0.5rem 0.8rem; font-size: 0.85rem; }
-            .logo-text { font-size: 1.2rem; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            .logo-text {
+                font-size: 1.2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         /* ===== UTILITY CLASSES ===== */
-        .hidden { display: none !important; }
-        .text-center { text-align: center; }
-        .mt-2 { margin-top: 1rem; }
-        .mb-2 { margin-bottom: 1rem; }
-        .flex { display: flex; }
-        .gap-1 { gap: 0.5rem; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-2 {
+            margin-top: 1rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .gap-1 {
+            gap: 0.5rem;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <header>
         <div class="header-container">
             <div class="logo-section">
-                <img src="https://lms.iukl.edu.my/lms/version/2/images/logo/klust_color.png" alt="University Logo" class="logo-img">
+                <img src="https://lms.iukl.edu.my/lms/version/2/images/logo/klust_color.png" alt="University Logo"
+                    class="logo-img">
                 <div class="logo-text">🎓 Engineering Faculty</div>
             </div>
             <nav>
@@ -813,8 +921,10 @@
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <img src="https://lms.iukl.edu.my/lms/version/2/images/logo/klust_color.png" alt="University Logo" class="logo-img" style="margin-bottom: 1rem;">
-                <p style="color: #bfdbfe;">Engineering Faculty - Shaping the future through innovation and excellence in education</p>
+                <img src="https://lms.iukl.edu.my/lms/version/2/images/logo/klust_color.png" alt="University Logo"
+                    class="logo-img" style="margin-bottom: 1rem;">
+                <p style="color: #bfdbfe;">Engineering Faculty - Shaping the future through innovation and excellence in
+                    education</p>
             </div>
             <div class="footer-section">
                 <h4>Quick Links</h4>
@@ -871,19 +981,58 @@
                 <button class="close-btn" onclick="closeModal('eventModal')">&times;</button>
             </div>
             <form id="eventRegistrationForm">
-                <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" id="participantName" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="participantEmail" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Phone</label>
-                    <input type="tel" class="form-input" id="participantPhone" required>
-                </div>
-                <button type="submit" class="btn btn-blue btn-full">Register Now</button>
+                document.getElementById('eventRegistrationForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const name = document.getElementById('participantName').value;
+                const email = document.getElementById('participantEmail').value;
+                const phone = document.getElementById('participantPhone').value;
+
+                let events = getEvents();
+                const eventIndex = events.findIndex(e => e.id === selectedEventForRegistration);
+
+                if (eventIndex !== -1) {
+
+                if (!events[eventIndex].participants) {
+                events[eventIndex].participants = [];
+                }
+
+                if (events[eventIndex].capacity &&
+                events[eventIndex].participants.length >= events[eventIndex].capacity) {
+                alert('❌ Sorry, this event is at full capacity!');
+                return;
+                }
+
+                events[eventIndex].participants.push({
+                name,
+                email,
+                phone,
+                registeredAt: new Date().toISOString()
+                });
+
+                saveEvents(events);
+
+                // 🔥 SEND EMAIL CONFIRMATION
+                emailjs.send("d9IT7uMZf8i1YmPOGNAFU", "template_tkqq1vv", {
+                to_name: name,
+                to_email: email,
+                event_title: events[eventIndex].title,
+                event_date: events[eventIndex].date,
+                event_time: events[eventIndex].time,
+                location: events[eventIndex].location
+                }).then(function(response) {
+                alert("✅ Registration successful! Confirmation email sent.");
+                }, function(error) {
+                alert("Registration saved, but email failed to send.");
+                console.log(error);
+                });
+
+                closeModal('eventModal');
+                this.reset();
+                renderSection();
+                }
+                });
+
             </form>
         </div>
     </div>
@@ -1163,9 +1312,9 @@
                 openModal('loginModal');
                 return;
             }
-            
+
             currentSection = section;
-            
+
             // Update active nav button
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('active');
@@ -1173,15 +1322,15 @@
                     btn.classList.add('active');
                 }
             });
-            
+
             // Render the appropriate section
             renderSection();
         }
 
         function renderSection() {
             const mainContent = document.getElementById('mainContent');
-            
-            switch(currentSection) {
+
+            switch (currentSection) {
                 case 'home':
                     renderHomePage();
                     break;
@@ -1236,11 +1385,11 @@
                     </div>
                     <div class="grid">
                         ${upcomingEvents.map((event, index) => {
-                            const symbol = eventSymbols[event.type] || '📌';
-                            const fillPercent = event.capacity ? (event.participants.length / event.capacity) * 100 : 0;
-                            const isFilling = fillPercent > 70;
-                            
-                            return `
+                const symbol = eventSymbols[event.type] || '📌';
+                const fillPercent = event.capacity ? (event.participants.length / event.capacity) * 100 : 0;
+                const isFilling = fillPercent > 70;
+
+                return `
                                 <div class="card event-card animate-slideIn" style="animation-delay: ${index * 0.1}s">
                                     ${index === 0 ? '<div class="badge">⚡ FEATURED</div>' : ''}
                                     ${isFilling ? '<div class="badge" style="top: 3.5rem;">🔥 FILLING FAST</div>' : ''}
@@ -1287,7 +1436,7 @@
                                     <button class="btn btn-blue btn-full" onclick="registerForEvent('${event.id}')">Register Now</button>
                                 </div>
                             `;
-                        }).join('')}
+            }).join('')}
                     </div>
                     
                     <div style="text-align: center; margin-top: 3rem;">
@@ -1377,7 +1526,7 @@
         function renderEventsPage() {
             const events = getEvents();
             const departments = getDepartments();
-            
+
             const mainContent = document.getElementById('mainContent');
             mainContent.innerHTML = `
                 <section class="hero" style="padding: 3rem 2rem;">
@@ -1390,12 +1539,12 @@
                 <section class="container">
                     <div class="grid">
                         ${events.length > 0 ? events.map(event => {
-                            const symbol = eventSymbols[event.type] || '📌';
-                            const fillPercent = event.capacity ? (event.participants.length / event.capacity) * 100 : 0;
-                            const isFilling = fillPercent > 70;
-                            const isPast = new Date(event.date) < new Date();
-                            
-                            return `
+                const symbol = eventSymbols[event.type] || '📌';
+                const fillPercent = event.capacity ? (event.participants.length / event.capacity) * 100 : 0;
+                const isFilling = fillPercent > 70;
+                const isPast = new Date(event.date) < new Date();
+
+                return `
                                 <div class="card event-card">
                                     ${isFilling && !isPast ? '<div class="badge">🔥 FILLING FAST</div>' : ''}
                                     ${isPast ? '<div class="badge" style="background: #94a3b8;">✓ Completed</div>' : ''}
@@ -1450,7 +1599,7 @@
                                     `}
                                 </div>
                             `;
-                        }).join('') : '<p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">No events available.</p>'}
+            }).join('') : '<p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">No events available.</p>'}
                     </div>
                 </section>
             `;
@@ -1459,7 +1608,7 @@
         // ===== DEPARTMENTS PAGE =====
         function renderDepartmentsPage() {
             const departments = getDepartments();
-            
+
             const mainContent = document.getElementById('mainContent');
             mainContent.innerHTML = `
                 <section class="hero" style="padding: 3rem 2rem;">
@@ -1576,9 +1725,9 @@
                 navigateTo('home');
                 return;
             }
-            
+
             const events = getEvents();
-            
+
             const mainContent = document.getElementById('mainContent');
             mainContent.innerHTML = `
                 <section class="hero" style="padding: 3rem 2rem;">
@@ -1639,7 +1788,7 @@
 
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
-            
+
             // Reset forms
             if (modalId === 'eventManageModal') {
                 document.getElementById('eventManageForm').reset();
@@ -1669,7 +1818,7 @@
         function editEvent(eventId) {
             const event = getEventById(eventId);
             if (!event) return;
-            
+
             document.getElementById('eventManageTitle').textContent = '✏️ Edit Event';
             document.getElementById('eventEditId').value = eventId;
             document.getElementById('eventTitle').value = event.title;
@@ -1680,13 +1829,13 @@
             document.getElementById('eventDepartment').value = event.departmentId;
             document.getElementById('eventType').value = event.type;
             document.getElementById('eventCapacity').value = event.capacity || '';
-            
+
             openModal('eventManageModal');
         }
 
         function deleteEvent(eventId) {
             if (!confirm('Are you sure you want to delete this event?')) return;
-            
+
             let events = getEvents();
             events = events.filter(e => e.id !== eventId);
             saveEvents(events);
@@ -1695,50 +1844,50 @@
         }
 
         // ===== EVENT HANDLERS =====
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Set current year in footer
             document.getElementById('currentYear').textContent = new Date().getFullYear();
-            
+
             // Initialize data
             initializeData();
-            
+
             // Check if user is logged in
             isStaff = localStorage.getItem('isStaff') === 'true';
             updateManageButton();
-            
+
             // Render initial page
             renderSection();
-            
+
             // Navigation buttons
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', function () {
                     navigateTo(this.dataset.section);
                 });
             });
-            
+
             // Footer links
             document.querySelectorAll('footer a[data-section]').forEach(link => {
-                link.addEventListener('click', function(e) {
+                link.addEventListener('click', function (e) {
                     e.preventDefault();
                     navigateTo(this.dataset.section);
                 });
             });
-            
+
             // Dark mode toggle
             document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
-            
+
             // Load dark mode preference
             if (localStorage.getItem('darkMode') === 'true') {
                 document.documentElement.setAttribute('data-theme', 'dark');
                 document.getElementById('darkModeToggle').textContent = '☀️';
             }
-            
+
             // Login form
-            document.getElementById('loginForm').addEventListener('submit', function(e) {
+            document.getElementById('loginForm').addEventListener('submit', function (e) {
                 e.preventDefault();
                 const email = document.getElementById('loginEmail').value;
                 const password = document.getElementById('loginPassword').value;
-                
+
                 // Simple authentication (demo purposes)
                 if (password === 'staff123') {
                     isStaff = true;
@@ -1751,52 +1900,52 @@
                     alert('❌ Invalid credentials. Use password: staff123');
                 }
             });
-            
+
             // Event registration form
-            document.getElementById('eventRegistrationForm').addEventListener('submit', function(e) {
+            document.getElementById('eventRegistrationForm').addEventListener('submit', function (e) {
                 e.preventDefault();
-                
+
                 const name = document.getElementById('participantName').value;
                 const email = document.getElementById('participantEmail').value;
                 const phone = document.getElementById('participantPhone').value;
-                
+
                 let events = getEvents();
                 const eventIndex = events.findIndex(e => e.id === selectedEventForRegistration);
-                
+
                 if (eventIndex !== -1) {
                     if (!events[eventIndex].participants) {
                         events[eventIndex].participants = [];
                     }
-                    
+
                     // Check capacity
                     if (events[eventIndex].capacity && events[eventIndex].participants.length >= events[eventIndex].capacity) {
                         alert('❌ Sorry, this event is at full capacity!');
                         return;
                     }
-                    
+
                     events[eventIndex].participants.push({ name, email, phone, registeredAt: new Date().toISOString() });
                     saveEvents(events);
-                    
+
                     closeModal('eventModal');
                     this.reset();
                     alert('✅ Registration successful! You will receive a confirmation email shortly.');
                     renderSection();
                 }
             });
-            
+
             // Contact form
-            document.getElementById('contactForm').addEventListener('submit', function(e) {
+            document.getElementById('contactForm').addEventListener('submit', function (e) {
                 e.preventDefault();
-                
+
                 closeModal('contactModal');
                 this.reset();
                 alert('✅ Message sent successfully! We will get back to you soon.');
             });
-            
+
             // Event management form
-            document.getElementById('eventManageForm').addEventListener('submit', function(e) {
+            document.getElementById('eventManageForm').addEventListener('submit', function (e) {
                 e.preventDefault();
-                
+
                 const eventId = document.getElementById('eventEditId').value;
                 const eventData = {
                     title: document.getElementById('eventTitle').value,
@@ -1808,9 +1957,9 @@
                     type: document.getElementById('eventType').value,
                     capacity: parseInt(document.getElementById('eventCapacity').value) || 0,
                 };
-                
+
                 let events = getEvents();
-                
+
                 if (eventId) {
                     // Edit existing event
                     const index = events.findIndex(e => e.id === eventId);
@@ -1823,17 +1972,17 @@
                     eventData.participants = [];
                     events.push(eventData);
                 }
-                
+
                 saveEvents(events);
                 closeModal('eventManageModal');
                 this.reset();
                 renderManagePage();
                 alert('✅ Event saved successfully!');
             });
-            
+
             // Close modals on background click
             document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', function(e) {
+                modal.addEventListener('click', function (e) {
                     if (e.target === this) {
                         closeModal(this.id);
                     }
@@ -1845,7 +1994,7 @@
             const html = document.documentElement;
             const currentTheme = html.getAttribute('data-theme');
             const button = document.getElementById('darkModeToggle');
-            
+
             if (currentTheme === 'dark') {
                 html.removeAttribute('data-theme');
                 button.textContent = '🌙';
@@ -1876,4 +2025,5 @@
         }
     </script>
 </body>
+
 </html>
