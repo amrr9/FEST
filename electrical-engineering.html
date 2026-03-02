@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrical Engineering - Engineering Faculty Portal</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            emailjs.init("4lhNrlPq6bfTcL9Yx");
+        });
+    </script>
+    <style>
+        :root {
+            --primary-blue: #003d82;
+            --secondary-blue: #0056b3;
+            --accent-yellow: #FFD700;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --text-dark: #1e293b;
+            --text-light: #ffffff;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: rgba(0, 61, 130, 0.1);
+            --gradient-bg: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f8fafc 100%);
+        }
+        [data-theme="dark"] {
+            --primary-blue: #0056b3;
+            --secondary-blue: #003d82;
+            --accent-yellow: #FFC107;
+            --light-bg: #0f172a;
+            --white: #1e293b;
+            --text-dark: #f1f5f9;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --gradient-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--gradient-bg);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        .animate-fadeIn { animation: fadeIn 0.6s ease forwards; }
+        .animate-slideIn { animation: slideInRight 0.6s ease forwards; }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-light);
+        }
+        .logo-img { height: 40px; border-radius: 50%; }
+        .logo-text h1 { font-size: 1.5rem; font-weight: bold; }
+        .logo-text p { font-size: 0.75rem; color: #bfdbfe; }
+        nav { display: flex; gap: 1rem; align-items: center; }
+        .nav-btn {
+            background: transparent;
+            color: var(--text-light);
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        .nav-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .nav-btn.active { background: var(--accent-yellow); color: var(--primary-blue); }
+        #darkModeToggle { background: transparent; color: var(--text-light); border: none; cursor: pointer; font-size: 1.3rem; }
+        main { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; min-height: calc(100vh - 200px); }
+        .hero {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--text-light);
+            padding: 4rem 2rem;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .hero-content h1 { font-size: 3rem; margin-bottom: 1rem; font-weight: bold; }
+        .hero-content p { font-size: 1.2rem; margin-bottom: 1rem; color: #e0f2ff; }
+        .btn-primary {
+            padding: 0.8rem 1.8rem;
+            background: var(--accent-yellow);
+            color: var(--primary-blue);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(255, 215, 0, 0.3); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0; }
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px var(--shadow); }
+        .section-title { font-size: 2.5rem; font-weight: bold; text-align: center; color: var(--text-dark); margin-bottom: 0.5rem; }
+        .section-subtitle { text-align: center; color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem; }
+        .event-card { position: relative; }
+        .badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #ff6b6b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .event-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .event-icon { font-size: 3rem; }
+        .event-type { background: var(--light-bg); padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; color: var(--primary-blue); }
+        .event-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 0.5rem; color: var(--text-dark); }
+        .event-description { color: var(--text-muted); margin-bottom: 1rem; font-size: 0.95rem; }
+        .event-details { display: flex; flex-direction: column; gap: 0.8rem; margin: 1rem 0; padding: 1rem 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+        .event-detail-item { display: flex; align-items: center; gap: 0.8rem; color: var(--text-dark); font-weight: 500; }
+        .detail-icon { font-size: 1.2rem; }
+        .progress-bar { height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue)); }
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        .btn-blue {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--text-light);
+        }
+        .btn-blue:hover { transform: translateY(-2px); box-shadow: 0 8px 16px var(--shadow); }
+        .btn-outline { background: transparent; border: 2px solid var(--border-color); color: var(--text-dark); }
+        .btn-full { width: 100%; margin-top: 1rem; }
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .modal-title { font-size: 1.5rem; font-weight: bold; color: var(--text-dark); }
+        .close-btn { background: none; border: none; font-size: 2rem; cursor: pointer; color: var(--text-muted); }
+        .close-btn:hover { color: var(--text-dark); }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-dark); }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            color: var(--text-dark);
+            background: var(--light-bg);
+            transition: all 0.3s ease;
+        }
+        .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0, 61, 130, 0.1); }
+        .form-textarea { resize: vertical; min-height: 100px; }
+        footer {
+            background: var(--primary-blue);
+            color: var(--text-light);
+            padding: 3rem 2rem 1rem;
+            margin-top: 3rem;
+        }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto 2rem; }
+        .footer-section h4 { margin-bottom: 1rem; font-size: 1.1rem; }
+        .footer-section ul { list-style: none; }
+        .footer-section ul li { margin-bottom: 0.8rem; }
+        .footer-section a { color: #bfdbfe; text-decoration: none; transition: color 0.3s ease; }
+        .footer-section a:hover { color: var(--accent-yellow); }
+        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); color: #bfdbfe; }
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 1rem; }
+            nav { flex-wrap: wrap; justify-content: center; }
+            .hero-content h1 { font-size: 2rem; }
+            .grid { grid-template-columns: 1fr; }
+            .contact-container { grid-template-columns: 1fr; }
+            .department-stats { grid-template-columns: 1fr; }
+        }
+        .department-info {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--text-light);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        .department-info h2 { font-size: 2rem; margin-bottom: 1rem; }
+        .department-info p { font-size: 1.05rem; margin-bottom: 1.5rem; color: #e0f2ff; }
+        .department-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 2rem; }
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 2.5rem; font-weight: bold; color: var(--accent-yellow); }
+        .stat-label { font-size: 0.95rem; color: #bfdbfe; margin-top: 0.5rem; }
+        .contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2rem; }
+        .contact-info { display: flex; flex-direction: column; gap: 2rem; }
+        .contact-item { display: flex; gap: 1rem; align-items: flex-start; }
+        .contact-icon { font-size: 1.8rem; min-width: 40px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="fu.html" class="logo">
+                <img src="https://lms.iukl.edu.my/lms/version/2/images/logo/klust_color.png" alt="University Logo" class="logo-img">
+                <div class="logo-text">
+                    <h1>IUKL</h1>
+                    <p>Engineering Faculty Portal</p>
+                </div>
+            </a>
+            <nav>
+                <button class="nav-btn active" data-section="dept">🏛️ Electrical Engineering</button>
+                <button class="nav-btn" data-section="events">📅 Events</button>
+                <button class="nav-btn" data-section="contact">✉️ Contact</button>
+                <button id="darkModeToggle">🌙</button>
+            </nav>
+        </div>
+    </header>
+    <main id="mainContent"></main>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="https://lms.iukl.edu.my/lms/version/2/images/logo/klust_color.png" alt="University Logo" class="logo-img" style="margin-bottom: 1rem;">
+                <p style="color: #bfdbfe;">Electrical Engineering Department - Powering Innovation</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#" data-section="dept">🏛️ Department</a></li>
+                    <li><a href="#" data-section="events">📅 Events</a></li>
+                    <li><a href="fu.html">🌍 Main Portal</a></li>
+                    <li><a href="#" data-section="contact">✉️ Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Department Contact</h4>
+                <ul>
+                    <li>📧 electrical@university.edu</li>
+                    <li>📞 +60 3-1234 5678</li>
+                    <li>📍 Electrical Engineering Building</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="currentYear"></span> Electrical Engineering Department. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">📝 Register for Event</h2>
+                <button class="close-btn" onclick="closeModal('eventModal')">&times;</button>
+            </div>
+            <form id="eventRegistrationForm">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" id="participantName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="participantEmail" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" class="form-input" id="participantPhone" required>
+                </div>
+                <button type="submit" class="btn btn-blue btn-full">Register Now</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">✉️ Send Message</h2>
+                <button class="close-btn" onclick="closeModal('contactModal')">&times;</button>
+            </div>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-input" id="contactName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="contactEmail" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-textarea" id="contactMessage" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-blue btn-full">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const EMAILJS_SERVICE_ID = "service_9im0w68";
+        const EMAILJS_TEMPLATE_ID = "template_tkqq1vv";
+        const eventSymbols = { seminar: '📚', workshop: '🔧', conference: '🎓', competition: '🏆', webinar: '💻' };
+        const departmentId = 'electrical';
+        const departmentInfo = {
+            name: 'Electrical Engineering',
+            description: 'Innovating electrical systems and electronics for a connected future.',
+            studentCount: 510,
+            staffCount: 30,
+            contact: 'electrical@university.edu'
+        };
+        let currentSection = 'dept';
+        let selectedEventForRegistration = null;
+
+        function initializeData() {
+            if (!localStorage.getItem('events')) {
+                const events = [{ id: '3', title: 'International Power Systems Conference', description: 'Global conference on renewable energy and smart grid technologies.', date: '2026-03-05', time: '09:00', location: 'Main Auditorium', departmentId: 'electrical', type: 'conference', capacity: 300, participants: [] }];
+                localStorage.setItem('events', JSON.stringify(events));
+            }
+        }
+
+        function getEvents() { return JSON.parse(localStorage.getItem('events') || '[]'); }
+        function getEventById(id) { return getEvents().find(e => e.id === id); }
+        function formatTimeHHMMToAMPM(hhmm) {
+            if (!hhmm || !hhmm.includes(":")) return hhmm || "";
+            const [hhStr, mmStr] = hhmm.split(":");
+            let hh = parseInt(hhStr, 10);
+            const mm = mmStr;
+            const ampm = hh >= 12 ? "PM" : "AM";
+            hh = hh % 12;
+            if (hh === 0) hh = 12;
+            return `${hh}:${mm} ${ampm}`;
+        }
+
+        function navigateTo(section) {
+            currentSection = section;
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.section === section) btn.classList.add('active');
+            });
+            renderSection();
+        }
+
+        function renderSection() {
+            switch (currentSection) {
+                case 'dept': renderDepartmentPage(); break;
+                case 'events': renderEventsPage(); break;
+                case 'contact': renderContactPage(); break;
+                default: renderDepartmentPage();
+            }
+        }
+
+        function renderDepartmentPage() {
+            const mainContent = document.getElementById('mainContent');
+            const allEvents = getEvents().filter(e => e.departmentId === departmentId);
+            mainContent.innerHTML = `
+                <section class="department-info animate-fadeIn">
+                    <h2>${departmentInfo.name}</h2>
+                    <p>${departmentInfo.description}</p>
+                    <div class="department-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">${departmentInfo.studentCount}</div>
+                            <div class="stat-label">👨‍🎓 Students</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${departmentInfo.staffCount}</div>
+                            <div class="stat-label">👨‍🏫 Faculty Staff</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${allEvents.length}</div>
+                            <div class="stat-label">📅 Events</div>
+                        </div>
+                    </div>
+                </section>
+                <section class="container animate-fadeIn">
+                    <h2 class="section-title">Overview</h2>
+                    <p class="section-subtitle">Learn more about the Electrical Engineering department</p>
+                    <div class="grid">
+                        <div class="card">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                            <h3 style="font-size: 1.3rem; font-weight: bold; margin-bottom: 0.8rem;">Power Systems</h3>
+                            <p style="color: var(--text-muted);">Design and manage electrical power generation, transmission, and distribution systems.</p>
+                        </div>
+                        <div class="card">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">🔌</div>
+                            <h3 style="font-size: 1.3rem; font-weight: bold; margin-bottom: 0.8rem;">Electronics</h3>
+                            <p style="color: var(--text-muted);">Develop advanced electronic devices and circuits for modern applications.</p>
+                        </div>
+                        <div class="card">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">🌍</div>
+                            <h3 style="font-size: 1.3rem; font-weight: bold; margin-bottom: 0.8rem;">Renewable Energy</h3>
+                            <p style="color: var(--text-muted);">Harness sustainable energy sources for a greener planet.</p>
+                        </div>
+                    </div>
+                </section>
+                ${allEvents.length > 0 ? `
+                <section class="container animate-fadeIn">
+                    <h2 class="section-title">📅 Department Events</h2>
+                    <p class="section-subtitle">Upcoming events and opportunities</p>
+                    <div class="grid">
+                        ${allEvents.map((event, index) => {
+                            const symbol = eventSymbols[event.type] || '📌';
+                            const fillPercent = event.capacity ? (event.participants.length / event.capacity) * 100 : 0;
+                            const isPast = new Date(event.date) < new Date();
+                            return `
+                                <div class="card event-card animate-slideIn" style="animation-delay: ${index * 0.1}s">
+                                    ${isPast ? '<div class="badge" style="background: #94a3b8;">✓ Completed</div>' : ''}
+                                    <div class="event-header">
+                                        <div class="event-icon animate-float">${symbol}</div>
+                                        <div class="event-type">${event.type}</div>
+                                    </div>
+                                    <h3 class="event-title">${event.title}</h3>
+                                    <p class="event-description">${event.description}</p>
+                                    <div class="event-details">
+                                        <div class="event-detail-item"><div class="detail-icon">📅</div><span>${new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span></div>
+                                        <div class="event-detail-item"><div class="detail-icon">🕐</div><span>${formatTimeHHMMToAMPM(event.time)}</span></div>
+                                        <div class="event-detail-item"><div class="detail-icon">📍</div><span>${event.location}</span></div>
+                                    </div>
+                                    ${event.capacity ? `<div style="margin: 1rem 0;"><div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;"><span style="font-weight: 600; color: var(--text-muted);">Availability</span><span style="font-weight: bold; color: var(--primary-blue);">${event.participants.length} / ${event.capacity}</span></div><div class="progress-bar"><div class="progress-fill" style="width: ${fillPercent}%;"></div></div></div>` : ''}
+                                    ${!isPast ? `<button class="btn btn-blue btn-full" onclick="registerForEvent('${event.id}')">Register Now</button>` : `<button class="btn btn-outline btn-full" disabled>Event Completed</button>`}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </section>
+                ` : ''}
+                <section class="container">
+                    <div style="background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); padding: 3rem; border-radius: 24px; text-align: center; box-shadow: 0 20px 40px var(--shadow);">
+                        <h2 style="font-size: 2rem; font-weight: bold; color: white; margin-bottom: 1rem;">Get in Touch with Us</h2>
+                        <p style="font-size: 1rem; color: #e0f2ff; margin-bottom: 2rem; max-width: 700px; margin-left: auto; margin-right: auto;">Have questions about Electrical Engineering? Contact us for more information!</p>
+                        <button class="btn-primary" onclick="navigateTo('contact')">Contact Department →</button>
+                    </div>
+                </section>
+            `;
+        }
+
+        function renderEventsPage() {
+            const allEvents = getEvents().filter(e => e.departmentId === departmentId);
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <section class="hero" style="padding: 3rem 2rem;">
+                    <div class="hero-content">
+                        <h1 style="font-size: 2.5rem;">📅 Electrical Engineering Events</h1>
+                        <p>Discover and participate in our electrical engineering events</p>
+                    </div>
+                </section>
+                <section class="container">
+                    <div class="grid">
+                        ${allEvents.length > 0 ? allEvents.map(event => {
+                            const symbol = eventSymbols[event.type] || '📌';
+                            const fillPercent = event.capacity ? (event.participants.length / event.capacity) * 100 : 0;
+                            const isPast = new Date(event.date) < new Date();
+                            return `
+                                <div class="card event-card">
+                                    ${isPast ? '<div class="badge" style="background: #94a3b8;">✓ Completed</div>' : ''}
+                                    <div class="event-header">
+                                        <div class="event-icon">${symbol}</div>
+                                        <div class="event-type">${event.type}</div>
+                                    </div>
+                                    <h3 class="event-title">${event.title}</h3>
+                                    <p class="event-description">${event.description}</p>
+                                    <div class="event-details">
+                                        <div class="event-detail-item"><div class="detail-icon">📅</div><span>${new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span></div>
+                                        <div class="event-detail-item"><div class="detail-icon">🕐</div><span>${formatTimeHHMMToAMPM(event.time)}</span></div>
+                                        <div class="event-detail-item"><div class="detail-icon">📍</div><span>${event.location}</span></div>
+                                    </div>
+                                    ${event.capacity ? `<div style="margin: 1rem 0;"><div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;"><span style="font-weight: 600; color: var(--text-muted);">Availability</span><span style="font-weight: bold; color: var(--primary-blue);">${event.participants.length} / ${event.capacity}</span></div><div class="progress-bar"><div class="progress-fill" style="width: ${fillPercent}%;"></div></div></div>` : ''}
+                                    ${!isPast ? `<button class="btn btn-blue btn-full" onclick="registerForEvent('${event.id}')">Register Now</button>` : `<button class="btn btn-outline btn-full" disabled>Event Completed</button>`}
+                                </div>
+                            `;
+                        }).join('') : '<p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">No events available.</p>'}
+                    </div>
+                </section>
+            `;
+        }
+
+        function renderContactPage() {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <section class="hero" style="padding: 3rem 2rem;">
+                    <div class="hero-content">
+                        <h1 style="font-size: 2.5rem;">✉️ Contact Us</h1>
+                        <p>Get in touch with the Electrical Engineering Department</p>
+                    </div>
+                </section>
+                <section class="container">
+                    <div class="contact-container">
+                        <div class="contact-info">
+                            <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--text-dark);">📞 Get In Touch</h2>
+                            <div class="contact-item">
+                                <div class="contact-icon">📧</div>
+                                <div>
+                                    <h4 style="font-weight: bold; margin-bottom: 0.3rem; color: var(--text-dark);">Email</h4>
+                                    <p style="color: var(--text-muted);">electrical@university.edu</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">📞</div>
+                                <div>
+                                    <h4 style="font-weight: bold; margin-bottom: 0.3rem; color: var(--text-dark);">Phone</h4>
+                                    <p style="color: var(--text-muted);">+60 3-1234 5678 Ext. 203</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">📍</div>
+                                <div>
+                                    <h4 style="font-weight: bold; margin-bottom: 0.3rem; color: var(--text-dark);">Location</h4>
+                                    <p style="color: var(--text-muted);">Electrical Engineering Building<br>Block C, Level 2<br>University Campus</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">🕐</div>
+                                <div>
+                                    <h4 style="font-weight: bold; margin-bottom: 0.3rem; color: var(--text-dark);">Office Hours</h4>
+                                    <p style="color: var(--text-muted);">Monday - Friday<br>8:00 AM - 5:00 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card" style="height: fit-content;">
+                            <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-dark);">📝 Send a Message</h2>
+                            <button class="btn btn-blue btn-full" onclick="openModal('contactModal')">Open Contact Form</button>
+                            <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem; text-align: center;">Click to send us your message</p>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function openModal(modalId) { document.getElementById(modalId).classList.add('active'); }
+        function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
+        function registerForEvent(eventId) { selectedEventForRegistration = eventId; openModal('eventModal'); }
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const button = document.getElementById('darkModeToggle');
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+                button.textContent = '🌙';
+                localStorage.setItem('darkMode', 'false');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                button.textContent = '☀️';
+                localStorage.setItem('darkMode', 'true');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            initializeData();
+            renderSection();
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', function () { navigateTo(this.dataset.section); });
+            });
+
+            document.querySelectorAll('footer a[data-section]').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    navigateTo(this.dataset.section);
+                });
+            });
+
+            document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('darkModeToggle').textContent = '☀️';
+            }
+
+            document.getElementById('eventRegistrationForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const name = document.getElementById('participantName').value;
+                const email = document.getElementById('participantEmail').value;
+                const phone = document.getElementById('participantPhone').value;
+                let events = getEvents();
+                const eventIndex = events.findIndex(ev => ev.id === selectedEventForRegistration);
+                if (eventIndex === -1) { alert("❌ Event not found."); return; }
+                if (!events[eventIndex].participants) events[eventIndex].participants = [];
+                if (events[eventIndex].capacity && events[eventIndex].participants.length >= events[eventIndex].capacity) {
+                    alert('❌ Sorry, this event is at full capacity!'); return;
+                }
+                events[eventIndex].participants.push({ name, email, phone, registeredAt: new Date().toISOString() });
+                localStorage.setItem('events', JSON.stringify(events));
+                emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                    to_name: name,
+                    to_email: email,
+                    event_title: events[eventIndex].title,
+                    event_date: new Date(events[eventIndex].date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                }).then(() => { alert("✅ Registration successful!"); }).catch(() => { alert("✅ Registration saved"); });
+                closeModal('eventModal');
+                this.reset();
+                renderSection();
+            });
+
+            document.getElementById('contactForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                closeModal('contactModal');
+                this.reset();
+                alert('✅ Message sent successfully!');
+            });
+
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function (e) { if (e.target === this) closeModal(this.id); });
+            });
+        });
+    </script>
+</body>
+</html>
