@@ -17,7 +17,7 @@ https://amrr9.github.io/FEST/
 - 📊 Dynamic Statistics Section
 - 💾 LocalStorage Data Persistence
 - 📱 Fully Responsive Design
-
+- Email confirmation for event registration
 ---
 
 ## 🛠 Technologies Used
